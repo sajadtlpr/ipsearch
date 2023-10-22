@@ -1,32 +1,17 @@
-#coded by N17RO (noob hackers) 
-  
- #modules required 
- import argparse 
- import requests, json 
- import sys 
- from sys import argv 
- import os 
-  
- #arguments and parser 
-  
- parser = argparse.ArgumentParser() 
-  
- parser.add_argument ("-v", help= "target/host IP address", type=str, dest='target', required=True ) 
-  
- args = parser.parse_args() 
-  
- #colours used 
- red = '\033[31m' 
- yellow = '\033[93m' 
- lgreen = '\033[92m' 
- clear = '\033[0m' 
- bold = '\033[01m' 
- cyan = '\033[96m' 
-  
- #banner of script 
- print (red+""" 
-  
- 
+import argparse
+import requests
+import sys
+
+# Colors
+RED = '\033[31m'  
+GREEN = '\033[32m'
+YELLOW = '\033[33m'
+CLEAR = '\033[0m'
+
+# Banners 
+banner = f"""
+{RED}
+
   _____                               _               
  |_   _|                             | |              
    | |  _ __  ___  ___  __ _ _ __ ___| |__   ___ _ __ 
@@ -35,44 +20,41 @@
  |_____| .__/|___/\___|\__,_|_|  \___|_| |_|\___|_|   
        | |                                            
        |_|                                            
+{CLEAR}
+"""
 
-                                                       v 1.0 beta 
- """+red) 
- print (lgreen+bold+"         <===[[ Developed by Sajadtlpr ]]===> \n"+clear) 
- print (yellow+bold+"   <---(( Greets to all HITLOS SQUAD MEMBERS ))--> \n"+clear) 
-  
-  
- ip = args.target 
-  
- api = "http://ip-api.com/json/" 
-  
- try: 
-         data = requests.get(api+ip).json() 
-         sys.stdout.flush() 
-         a = lgreen+bold+"[$]" 
-         b = cyan+bold+"[$]" 
-         print (a, "[Victim]:", data['query']) 
-         print(red+"<--------------->"+red) 
-         print (b, "[ISP]:", data['isp']) 
-         print(red+"<--------------->"+red) 
-         print (a, "[Organisation]:", data['org']) 
-         print(red+"<--------------->"+red) 
-         print (b, "[City]:", data['city']) 
-         print(red+"<--------------->"+red) 
-         print (a, "[Region]:", data['region']) 
-         print(red+"<--------------->"+red) 
-         print (b, "[Longitude]:", data['lon']) 
-         print(red+"<--------------->"+red) 
-         print (a, "[Latitude]:", data['lat']) 
-         print(red+"<--------------->"+red) 
-         print (b, "[Time zone]:", data['timezone']) 
-         print(red+"<--------------->"+red) 
-         print (a, "[Zip code]:", data['zip']) 
-         print (" "+yellow) 
-  
- except KeyboardInterrupt: 
-         print ('Terminating, Bye'+lgreen) 
-         sys.exit(0) 
- except requests.exceptions.ConnectionError as e: 
-         print (red+"[~]"+" check your internet connection!"+clear) 
- sys.exit(1)
+banner2 = f"""{GREEN}
+<=== [[Developed by Sajadtlpr]] ===>  
+<---(( Greets to all HITLOS SQUAD MEMBERS ))-->
+{CLEAR}"""
+
+print(banner)
+print(banner2)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-v", help="target IP address", dest='target', required=True)
+args = parser.parse_args()  
+
+if not args.target:
+    print(f"{RED}Error: IP address is required{CLEAR}")
+    parser.print_help()
+    sys.exit(1)
+
+ip = args.target
+
+try:
+    data = requests.get(f"http://ip-api.com/json/{ip}").json()
+
+    print(f"{GREEN}[Victim]: {data['query']}{CLEAR}")
+    print(f"{YELLOW}[ISP]: {data['isp']}{CLEAR}")
+    print(f"{GREEN}[Organisation]: {data['org']}{CLEAR}")
+    print(f"{YELLOW}[City]: {data['city']}{CLEAR}")
+    print(f"{GREEN}[Region]: {data['region']}{CLEAR}")
+    print(f"{YELLOW}[Longitude]: {data['lon']}{CLEAR}")
+    print(f"{GREEN}[Latitude]: {data['lat']}{CLEAR}")
+    print(f"{YELLOW}[Time zone]: {data['timezone']}{CLEAR}")
+    print(f"{GREEN}[Zip code]: {data['zip']}{CLEAR}")
+
+except requests.exceptions.ConnectionError:
+    print(f"{RED}Error: Check your internet connection!{CLEAR}")
+    sys.exit(1)
